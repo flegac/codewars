@@ -1,6 +1,8 @@
 package fr.flegac.codewars.skyscrappers.solver;
 
 import fr.flegac.codewars.skyscrappers.problem.Solution;
+import fr.flegac.codewars.skyscrappers.solver.rules.CluesSolver;
+import fr.flegac.codewars.skyscrappers.solver.rules.FixedValueSolver;
 
 public class Solver {
 
