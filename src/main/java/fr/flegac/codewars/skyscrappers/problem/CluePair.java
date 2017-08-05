@@ -3,11 +3,9 @@ package fr.flegac.codewars.skyscrappers.problem;
 import fr.flegac.codewars.skyscrappers.utils.Perm;
 
 public class CluePair {
-
   public static final CluePair UNIVERSAL_CLUE = new CluePair(0, 0);
 
   public final int start;
-
   public final int end;
 
   public CluePair(final int start, final int end) {

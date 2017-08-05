@@ -20,7 +20,6 @@ public class PermShould {
     final String expected = "[2, 3, 5, 4, 6, 1, 0]";
 
     assertThat(p1.toString()).isEqualTo(expected);
-
   }
 
 }
