@@ -1,8 +1,13 @@
 package fr.flegac.codewars.skyscrappers.solver;
 
+import java.util.LinkedList;
+import java.util.List;
 import fr.flegac.codewars.skyscrappers.problem.Solution;
 import fr.flegac.codewars.skyscrappers.solver.rules.CluesSolver;
-import fr.flegac.codewars.skyscrappers.solver.rules.FixedValueSolver;
+import fr.flegac.codewars.skyscrappers.solver.rules.SolverRule;
+import fr.flegac.codewars.skyscrappers.solver.rules.UniqueOnCellSolver;
+import fr.flegac.codewars.skyscrappers.solver.rules.UniqueOnColSolver;
+import fr.flegac.codewars.skyscrappers.solver.rules.UniqueOnRowSolver;
 
 public class Solver {
 
@@ -10,14 +15,16 @@ public class Solver {
 
   private final Solution solution;
 
-  private final FixedValueSolver fixedSolver;
-  private final CluesSolver cluesSolver;
+  private final List<SolverRule> solvers = new LinkedList<>();
 
   public Solver(final int[] clues) {
     final int size = clues.length / GRID_SIDE_NUMBER;
     solution = new Solution(size);
-    fixedSolver = new FixedValueSolver();
-    cluesSolver = new CluesSolver(clues);
+
+    solvers.add(new UniqueOnCellSolver());
+    solvers.add(new UniqueOnColSolver());
+    solvers.add(new UniqueOnRowSolver());
+    solvers.add(new CluesSolver(clues));
   }
 
   public Solution solve() {
@@ -29,8 +36,9 @@ public class Solver {
     int oldDistance;
     do {
       oldDistance = solution.distanceFromResolution();
-      fixedSolver.apply(solution);
-      cluesSolver.apply(solution);
+      for (final SolverRule solver : solvers) {
+        solver.apply(solution);
+      }
     } while (solution.distanceFromResolution() < oldDistance);
     System.out.println("distance = " + solution.distanceFromResolution());
     System.out.println(solution);

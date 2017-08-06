@@ -1,38 +1,43 @@
 package fr.flegac.codewars.skyscrappers.problem;
 
-import fr.flegac.codewars.skyscrappers.utils.Perm;
+import fr.flegac.codewars.skyscrappers.permutations.Perm;
 
+/**
+ * CluePair is a couple of clues taken on the same row or column.
+ * The first and last clues are respectively the left (or top) one and the right (or bottom) one of a row (or column)
+ *
+ */
 public class CluePair {
   public static final CluePair UNIVERSAL_CLUE = new CluePair(0, 0);
 
-  public final int start;
-  public final int end;
+  public final int first;
+  public final int last;
 
-  public CluePair(final int start, final int end) {
-    this.start = start;
-    this.end = end;
+  public CluePair(final int first, final int last) {
+    this.first = first;
+    this.last = last;
   }
 
   public CluePair(final Perm permutation) {
     final int size = permutation.size();
-    int _start = 0, _end = 0;
-    int leftMax = -1, rightMax = -1;
+    int _first = 0, _last = 0;
+    int firstMax = -1, lastMax = -1;
     for (int i = 0; i < size; i++) {
-      if (permutation.get(i) > leftMax) {
-        _start++;
-        leftMax = permutation.get(i);
+      if (permutation.get(i) > firstMax) {
+        _first++;
+        firstMax = permutation.get(i);
       }
-      if (permutation.get(size - 1 - i) > rightMax) {
-        _end++;
-        rightMax = permutation.get(size - 1 - i);
+      if (permutation.get(size - 1 - i) > lastMax) {
+        _last++;
+        lastMax = permutation.get(size - 1 - i);
       }
     }
-    start = _start;
-    end = _end;
+    first = _first;
+    last = _last;
   }
 
   public CluePair end() {
-    return new CluePair(0, end);
+    return new CluePair(0, last);
   }
 
   @Override
@@ -47,10 +52,10 @@ public class CluePair {
       return false;
     }
     final CluePair other = (CluePair) obj;
-    if (end != other.end) {
+    if (last != other.last) {
       return false;
     }
-    if (start != other.start) {
+    if (first != other.first) {
       return false;
     }
     return true;
@@ -60,18 +65,18 @@ public class CluePair {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + end;
-    result = prime * result + start;
+    result = prime * result + last;
+    result = prime * result + first;
     return result;
   }
 
   public CluePair start() {
-    return new CluePair(start, 0);
+    return new CluePair(first, 0);
   }
 
   @Override
   public String toString() {
-    return "[" + start + "," + end + "]";
+    return "[" + first + "," + last + "]";
   }
 
 }

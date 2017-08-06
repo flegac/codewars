@@ -27,19 +27,19 @@ public class SolutionShould {
   public void checkIfCellValueIsFixed() throws Exception {
     // given
     final Solution solution = new Solution(SIZE);
-    final int id = solution.index(2, 2);
+    final int cellId = solution.index(2, 2);
     final int value = 3;
 
     Assertions.assertThatThrownBy(() -> {
-      solution.getValue(id);
+      solution.getValue(cellId);
     }).isInstanceOf(new RuntimeException().getClass());
 
     // when
-    solution.keepOnly(id, value);
+    solution.keepOnly(cellId, value);
 
     // then
-    assertThat(solution.isFixed(id)).isEqualTo(true);
-    assertThat(solution.getCellAvailabilities(id).nextSetBit(0)).isEqualTo(value);
+    assertThat(solution.isFixed(cellId)).isEqualTo(true);
+    assertThat(solution.getValue(cellId)).isEqualTo(value);
   }
 
   @Test
@@ -53,8 +53,8 @@ public class SolutionShould {
   public void convertToSolutionArray() throws Exception {
     final Solution solution = new Solution(SIZE);
 
-    for (int id = 0; id < SIZE * SIZE; id++) {
-      solution.keepOnly(id, id % SIZE);
+    for (int cellId = 0; cellId < SIZE * SIZE; cellId++) {
+      solution.keepOnly(cellId, cellId % SIZE);
     }
 
     final int[][] output = solution.toArray();
@@ -70,8 +70,8 @@ public class SolutionShould {
   public void giveAccessToAvailablePossibilitiesOfACell() throws Exception {
     final Solution solution = new Solution(SIZE);
 
-    final int id = solution.index(3, 4);
-    final BitSet possibilities = solution.getCellAvailabilities(id);
+    final int cellID = solution.index(3, 4);
+    final BitSet possibilities = solution.getCellAvailabilities(cellID);
 
     assertThat(possibilities).isNotNull();
     assertThat(possibilities.cardinality()).isEqualTo(SIZE);
@@ -88,13 +88,13 @@ public class SolutionShould {
   public void keepOnlySomeValuesForACell() throws Exception {
     final Solution solution = new Solution(SIZE);
 
-    final int id = solution.index(3, 4);
+    final int cellId = solution.index(3, 4);
 
-    final BitSet availability = (BitSet) solution.getCellAvailabilities(id).clone();
+    final BitSet availability = (BitSet) solution.getCellAvailabilities(cellId).clone();
 
-    solution.keepOnly(id, 1, 2, 3, 4);
+    solution.keepOnly(cellId, 1, 2, 3, 4);
 
-    final BitSet availability2 = solution.getCellAvailabilities(id);
+    final BitSet availability2 = solution.getCellAvailabilities(cellId);
 
     assertThat(availability.cardinality()).isEqualTo(6);
     assertThat(availability2.cardinality()).isEqualTo(4);
@@ -114,15 +114,31 @@ public class SolutionShould {
   public void removePossibleValueForACell() throws Exception {
     final Solution solution = new Solution(SIZE);
 
-    final int id = solution.index(3, 4);
+    final int cellId = solution.index(3, 4);
 
-    final BitSet possibilities = (BitSet) solution.getCellAvailabilities(id).clone();
+    final BitSet possibilities = (BitSet) solution.getCellAvailabilities(cellId).clone();
 
-    solution.remove(id, 0);
+    solution.remove(cellId, 0);
 
-    final BitSet possibilities2 = solution.getCellAvailabilities(id);
+    final BitSet possibilities2 = solution.getCellAvailabilities(cellId);
 
     assertThat(possibilities).isNotEqualTo(possibilities2);
+  }
+
+  @Test
+  public void sayIfSomeValueIsPossibleForSomeCell() throws Exception {
+
+    final Solution solution = new Solution(SIZE);
+
+    final int cellId = solution.index(3, 5);
+    final int possibleValue = 4;
+    final int impossibleValue = 3;
+
+    solution.remove(cellId, impossibleValue);
+
+    assertThat(solution.isPossible(cellId, possibleValue)).isTrue();
+    assertThat(solution.isPossible(cellId, impossibleValue)).isFalse();
+
   }
 
 }

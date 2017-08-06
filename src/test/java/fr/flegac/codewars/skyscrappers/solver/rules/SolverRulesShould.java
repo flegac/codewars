@@ -26,14 +26,14 @@ public class SolverRulesShould {
     for (int col = 0; col < SIZE; col++) {
       final int cellId = solution.index(col, y);
       if (cellId != id) {
-        assertThat(solution.getCellAvailabilities(cellId).get(value)).isFalse();
+        assertThat(solution.isPossible(cellId, value)).isFalse();
       }
     }
 
     for (int row = 0; row < SIZE; row++) {
       final int cellId = solution.index(x, row);
       if (cellId != id) {
-        assertThat(solution.getCellAvailabilities(cellId).get(value)).isFalse();
+        assertThat(solution.isPossible(cellId, value)).isFalse();
       }
     }
 

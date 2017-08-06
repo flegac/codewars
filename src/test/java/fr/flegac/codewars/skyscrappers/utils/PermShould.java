@@ -2,6 +2,7 @@ package fr.flegac.codewars.skyscrappers.utils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
+import fr.flegac.codewars.skyscrappers.permutations.Perm;
 
 public class PermShould {
 

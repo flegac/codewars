@@ -2,6 +2,11 @@ package fr.flegac.codewars.skyscrappers.problem;
 
 import java.util.BitSet;
 
+/**
+ * Solution encode a partial solution.
+ * A partial solution consist of the set of remainings possible values for each cell of the solution.
+ *
+ */
 public class Solution {
   private final int size;
   private final BitSet data;
@@ -37,29 +42,33 @@ public class Solution {
     return i + j * size;
   }
 
-  public boolean isFixed(final int id) {
-    return getCellAvailabilities(id).cardinality() == 1;
+  public boolean isFixed(final int cellId) {
+    return getCellAvailabilities(cellId).cardinality() == 1;
   }
 
-  public void keepOnly(final int id, final BitSet values) {
+  public boolean isPossible(final int cellId, final int value) {
+    return getCellAvailabilities(cellId).get(value);
+  }
+
+  public void keepOnly(final int cellId, final BitSet values) {
     for (int value = 0; value < size; value++) {
       if (!values.get(value)) {
-        data.set(size * id + value, false);
+        data.set(size * cellId + value, false);
       }
     }
   }
 
-  public void keepOnly(final int id, final int... values) {
+  public void keepOnly(final int cellId, final int... values) {
     final BitSet set = new BitSet();
     for (final int value : values) {
       set.set(value);
     }
-    keepOnly(id, set);
+    keepOnly(cellId, set);
   }
 
-  public void remove(final int id, final int... values) {
+  public void remove(final int cellId, final int... values) {
     for (final int value : values) {
-      data.set(size * id + value, false);
+      data.set(size * cellId + value, false);
     }
   }
 
@@ -72,8 +81,8 @@ public class Solution {
 
     for (int i = 0; i < size; i++) {
       for (int j = 0; j < size; j++) {
-        final int id = index(i, j);
-        output[j][i] = getCellAvailabilities(id).nextSetBit(0) + 1;
+        final int cellId = index(i, j);
+        output[j][i] = getCellAvailabilities(cellId).nextSetBit(0) + 1;
       }
     }
 
@@ -85,16 +94,15 @@ public class Solution {
     final StringBuilder builder = new StringBuilder();
     for (int y = 0; y < size; y++) {
       for (int x = 0; x < size; x++) {
-        final int id = index(x, y);
-        builder.append(cellToString(id));
+        builder.append(cellToString(index(x, y)));
       }
       builder.append('\n');
     }
     return builder.toString();
   }
 
-  private String cellToString(final int id) {
-    final BitSet set = getCellAvailabilities(id);
+  private String cellToString(final int cellId) {
+    final BitSet set = getCellAvailabilities(cellId);
     final StringBuilder builder = new StringBuilder();
     builder.append("[");
     for (int value = 0; value < size; value++) {

@@ -1,6 +1,5 @@
 package fr.flegac.codewars.skyscrappers.solver.rules;
 
-import java.util.BitSet;
 import fr.flegac.codewars.skyscrappers.problem.Solution;
 
 /**
@@ -24,9 +23,9 @@ public class UniqueOnRowSolver implements SolverRule {
     final int[] cols = new int[size];
 
     for (int col = 0; col < size; col++) {
-      final BitSet availability = solution.getCellAvailabilities(solution.index(col, row));
+      final int cellId = solution.index(col, row);
       for (int value = 0; value < size; value++) {
-        if (availability.get(value)) {
+        if (solution.isPossible(cellId, value)) {
           occurences[value]++;
           cols[value] = col;
         }

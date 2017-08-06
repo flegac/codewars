@@ -1,4 +1,4 @@
-package fr.flegac.codewars.skyscrappers.utils;
+package fr.flegac.codewars.skyscrappers.permutations;
 
 import java.util.Arrays;
 

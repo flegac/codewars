@@ -6,10 +6,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import fr.flegac.codewars.skyscrappers.permutations.Perm;
+import fr.flegac.codewars.skyscrappers.permutations.PermGenerator;
 import fr.flegac.codewars.skyscrappers.problem.CluePair;
 import fr.flegac.codewars.skyscrappers.problem.Solution;
-import fr.flegac.codewars.skyscrappers.utils.Perm;
-import fr.flegac.codewars.skyscrappers.utils.PermGenerator;
 
 /**
  *
@@ -24,23 +24,20 @@ public class CluesSolver implements SolverRule {
 
   private static FixedValueSolver fixedSolver = new FixedValueSolver();
 
-  private final int[] clues;
-
   private final int size;
 
   private CluePair[] rows;
 
   private CluePair[] cols;
 
-  private final Set<CluePair> specificClues = new HashSet<>();
+  private final Set<CluePair> relevantClues = new HashSet<>();
 
   private final Map<CluePair, Set<Perm>> clueToPermutations = new HashMap<>();
 
   public CluesSolver(final int[] clues) {
     super();
-    this.clues = clues;
     size = clues.length / 4;
-    initializeClues();
+    initializeFromClues(clues);
   }
 
   @Override
@@ -105,16 +102,15 @@ public class CluesSolver implements SolverRule {
   }
 
   private void generateClueToPermutationsTable() {
-    for (final CluePair clue : specificClues) {
+    for (final CluePair clue : relevantClues) {
       clueToPermutations.put(clue, new HashSet<>());
       clueToPermutations.put(clue.start(), new HashSet<>());
       clueToPermutations.put(clue.end(), new HashSet<>());
     }
 
     final PermGenerator gen = new PermGenerator(size);
-    while (gen.hasNext()) {
-      final Perm perm = gen.next();
 
+    for (final Perm perm : gen) {
       final CluePair clue = new CluePair(perm);
       final CluePair start = clue.start();
       final CluePair end = clue.end();
@@ -132,18 +128,20 @@ public class CluesSolver implements SolverRule {
     }
   }
 
-  private void initializeClues() {
+  private void initializeFromClues(final int[] clues) {
     rows = new CluePair[size];
     cols = new CluePair[size];
     for (int i = 0; i < size; i++) {
       rows[i] = new CluePair(clues[4 * size - 1 - i], clues[i + size]);
       cols[i] = new CluePair(clues[i], clues[3 * size - 1 - i]);
-      specificClues.add(rows[i]);
-      specificClues.add(cols[i]);
-      specificClues.add(cols[i].start());
-      specificClues.add(cols[i].end());
-      specificClues.add(cols[i].start());
-      specificClues.add(cols[i].end());
+
+      relevantClues.add(rows[i]);
+      relevantClues.add(rows[i].start());
+      relevantClues.add(rows[i].end());
+
+      relevantClues.add(cols[i]);
+      relevantClues.add(cols[i].start());
+      relevantClues.add(cols[i].end());
     }
 
     generateClueToPermutationsTable();
@@ -151,8 +149,7 @@ public class CluesSolver implements SolverRule {
 
   private boolean isValidCol(final Solution solution, final Perm perm, final int col) {
     for (int i = 0; i < perm.size(); i++) {
-      final BitSet possibilities = solution.getCellAvailabilities(solution.index(col, i));
-      if (!possibilities.get(perm.get(i))) {
+      if (!solution.isPossible(solution.index(col, i), perm.get(i))) {
         return false;
       }
     }
@@ -161,8 +158,7 @@ public class CluesSolver implements SolverRule {
 
   private boolean isValidRow(final Solution solution, final Perm perm, final int row) {
     for (int i = 0; i < perm.size(); i++) {
-      final BitSet possibilities = solution.getCellAvailabilities(solution.index(i, row));
-      if (!possibilities.get(perm.get(i))) {
+      if (!solution.isPossible(solution.index(i, row), perm.get(i))) {
         return false;
       }
     }
