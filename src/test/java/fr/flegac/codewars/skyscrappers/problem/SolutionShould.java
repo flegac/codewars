@@ -89,20 +89,21 @@ public class SolutionShould {
     final Solution solution = new Solution(SIZE);
 
     final int cellId = solution.index(3, 4);
+    final int[] keepedValues = { 1, 2, 3, 4 };
 
     final BitSet availability = (BitSet) solution.getCellAvailabilities(cellId).clone();
 
-    solution.keepOnly(cellId, 1, 2, 3, 4);
+    solution.keepOnly(cellId, keepedValues);
 
     final BitSet availability2 = solution.getCellAvailabilities(cellId);
 
-    assertThat(availability.cardinality()).isEqualTo(6);
-    assertThat(availability2.cardinality()).isEqualTo(4);
+    assertThat(availability.cardinality()).isEqualTo(SIZE);
+    assertThat(availability2.cardinality()).isEqualTo(keepedValues.length);
   }
 
   @Test
   public void provideUniqueIdForEachCell() throws Exception {
-    final Solution solution = new Solution(6);
+    final Solution solution = new Solution(SIZE);
 
     final int id1 = solution.index(3, 4);
     final int id2 = solution.index(1, 2);
@@ -138,6 +139,35 @@ public class SolutionShould {
 
     assertThat(solution.isPossible(cellId, possibleValue)).isTrue();
     assertThat(solution.isPossible(cellId, impossibleValue)).isFalse();
+
+  }
+
+  @Test
+  public void transposeMatrix() throws Exception {
+    final Solution solution1 = new Solution(SIZE);
+    final Solution solution2 = new Solution(SIZE);
+    final int size = solution1.size();
+
+    for (int cellId = 0; cellId < solution1.cellNumber(); cellId++) {
+      solution1.keepOnly(cellId, cellId % SIZE);
+      solution2.keepOnly(cellId, cellId % SIZE);
+    }
+
+    solution1.transpose();
+
+    for (int x = 0; x < size; x++) {
+      for (int y = 0; y < size; y++) {
+        assertThat(solution1.index(x, y)).isEqualTo(solution2.index(y, x));
+      }
+    }
+
+    solution1.transpose();
+
+    for (int x = 0; x < size; x++) {
+      for (int y = 0; y < size; y++) {
+        assertThat(solution1.index(x, y)).isEqualTo(solution2.index(x, y));
+      }
+    }
 
   }
 

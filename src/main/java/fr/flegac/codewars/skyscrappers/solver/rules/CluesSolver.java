@@ -12,18 +12,12 @@ import fr.flegac.codewars.skyscrappers.problem.CluePair;
 import fr.flegac.codewars.skyscrappers.problem.Solution;
 
 /**
- *
  * When:
- *
  *
  * Then:
  *
- *
  */
 public class CluesSolver implements SolverRule {
-
-  private static FixedValueSolver fixedSolver = new FixedValueSolver();
-
   private final int size;
 
   private CluePair[] rows;
@@ -49,16 +43,10 @@ public class CluesSolver implements SolverRule {
       for (int id2 = 0; id2 < size; id2++) {
         final BitSet rowAvailabilities = rowConstraints.get(id2);
         solution.keepOnly(solution.index(id2, id1), rowAvailabilities);
-
-        fixedSolver.apply(solution);
-
         final BitSet colAvailabilities = colConstraints.get(id2);
         solution.keepOnly(solution.index(id1, id2), colAvailabilities);
-
-        fixedSolver.apply(solution);
       }
     }
-
   }
 
   public Map<Integer, BitSet> generateConstraints(final Set<Perm> permutations) {

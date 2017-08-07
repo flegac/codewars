@@ -11,21 +11,19 @@ public class UniqueOnCellSolver implements SolverRule {
 
   @Override
   public void apply(final Solution solution) {
-    for (int id = 0; id < solution.cellNumber(); id++) {
-      uniqueOnCell(solution, id);
+    for (int cellId = 0; cellId < solution.cellNumber(); cellId++) {
+      if (match(solution, cellId)) {
+        apply(solution, cellId);
+      }
     }
   }
 
-  private void uniqueOnCell(final Solution solution, final int cellId) {
-    if (!solution.isFixed(cellId)) {
-      return;
-    }
+  private void apply(final Solution solution, final int cellId) {
     final int size = solution.size();
-
     final int row = cellId / size;
     final int col = cellId % size;
-
     final int value = solution.getValue(cellId);
+
     for (int i = 0; i < size; i++) {
       if (i != row) {
         solution.remove(solution.index(col, i), value);
@@ -34,5 +32,9 @@ public class UniqueOnCellSolver implements SolverRule {
         solution.remove(solution.index(i, row), value);
       }
     }
+  }
+
+  private boolean match(final Solution solution, final int cellId) {
+    return solution.isFixed(cellId);
   }
 }

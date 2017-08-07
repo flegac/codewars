@@ -6,11 +6,9 @@ import fr.flegac.codewars.skyscrappers.problem.Solution;
 import fr.flegac.codewars.skyscrappers.solver.rules.CluesSolver;
 import fr.flegac.codewars.skyscrappers.solver.rules.SolverRule;
 import fr.flegac.codewars.skyscrappers.solver.rules.UniqueOnCellSolver;
-import fr.flegac.codewars.skyscrappers.solver.rules.UniqueOnColSolver;
-import fr.flegac.codewars.skyscrappers.solver.rules.UniqueOnRowSolver;
+import fr.flegac.codewars.skyscrappers.solver.rules.UniqueOnLineSolver;
 
 public class Solver {
-
   private static final int GRID_SIDE_NUMBER = 4;
 
   private final Solution solution;
@@ -22,8 +20,8 @@ public class Solver {
     solution = new Solution(size);
 
     solvers.add(new UniqueOnCellSolver());
-    solvers.add(new UniqueOnColSolver());
-    solvers.add(new UniqueOnRowSolver());
+    solvers.add(new UniqueOnLineSolver());
+    // solvers.add(new UniqueOnRowSolver());
     solvers.add(new CluesSolver(clues));
   }
 

@@ -7,8 +7,7 @@ import fr.flegac.codewars.skyscrappers.problem.Solution;
 public class SolverRulesShould {
   private static final int SIZE = 6;
 
-  private static SolverRule uniqueOnColSolver = new UniqueOnColSolver();
-  private static SolverRule uniqueOnRowSolver = new UniqueOnRowSolver();
+  private static SolverRule uniqueOnLineSolver = new UniqueOnLineSolver();
   private static SolverRule uniqueOnCellSolver = new UniqueOnCellSolver();
 
   @Test
@@ -22,6 +21,8 @@ public class SolverRulesShould {
     final int value = 0;
 
     solution.keepOnly(id, value);
+
+    uniqueOnCellSolver.apply(solution);
 
     for (int col = 0; col < SIZE; col++) {
       final int cellId = solution.index(col, y);
@@ -40,7 +41,7 @@ public class SolverRulesShould {
   }
 
   @Test
-  public void applyUniqueValueOnCol() throws Exception {
+  public void applyUniqueValueOnLine() throws Exception {
     final Solution solution = new Solution(SIZE);
 
     final int x = 2;
@@ -55,29 +56,7 @@ public class SolverRulesShould {
       solution.remove(id, value);
     }
 
-    uniqueOnColSolver.apply(solution);
-
-    assertThat(solution.isFixed(cellId)).isTrue();
-    assertThat(solution.getValue(cellId)).isEqualTo(value);
-  }
-
-  @Test
-  public void applyUniqueValueOnRow() throws Exception {
-    final Solution solution = new Solution(SIZE);
-
-    final int y = 2;
-    final int cellId = solution.index(3, y);
-    final int value = 4;
-
-    for (int x = 0; x < SIZE; x++) {
-      final int id = solution.index(x, y);
-      if (id == cellId) {
-        continue;
-      }
-      solution.remove(id, value);
-    }
-
-    uniqueOnRowSolver.apply(solution);
+    uniqueOnLineSolver.apply(solution);
 
     assertThat(solution.isFixed(cellId)).isTrue();
     assertThat(solution.getValue(cellId)).isEqualTo(value);

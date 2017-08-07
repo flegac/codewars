@@ -8,6 +8,7 @@ import java.util.BitSet;
  *
  */
 public class Solution {
+  private boolean transposed;
   private final int size;
   private final BitSet data;
 
@@ -38,8 +39,8 @@ public class Solution {
     return values.nextSetBit(0);
   }
 
-  public int index(final int i, final int j) {
-    return i + j * size;
+  public int index(final int x, final int y) {
+    return transposed ? (y + x * size) : (x + y * size);
   }
 
   public boolean isFixed(final int cellId) {
@@ -79,10 +80,10 @@ public class Solution {
   public int[][] toArray() {
     final int[][] output = new int[size][size];
 
-    for (int i = 0; i < size; i++) {
-      for (int j = 0; j < size; j++) {
-        final int cellId = index(i, j);
-        output[j][i] = getCellAvailabilities(cellId).nextSetBit(0) + 1;
+    for (int x = 0; x < size; x++) {
+      for (int y = 0; y < size; y++) {
+        final int cellId = index(x, y);
+        output[y][x] = getCellAvailabilities(cellId).nextSetBit(0) + 1;
       }
     }
 
@@ -99,6 +100,10 @@ public class Solution {
       builder.append('\n');
     }
     return builder.toString();
+  }
+
+  public void transpose() {
+    transposed = !transposed;
   }
 
   private String cellToString(final int cellId) {
