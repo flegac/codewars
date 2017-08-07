@@ -103,7 +103,6 @@ public class Problem {
       if (compatiblePermutations.containsKey(end)) {
         compatiblePermutations.get(end).add(perm);
       }
-
     }
   }
 
@@ -128,4 +127,5 @@ public class Problem {
     }
     return true;
   }
+
 }

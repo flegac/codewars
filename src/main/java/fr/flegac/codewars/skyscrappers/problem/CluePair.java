@@ -7,7 +7,9 @@ import fr.flegac.codewars.skyscrappers.permutations.Perm;
  * The first and last clues are respectively the left (or top) one and the right (or bottom) one of a row (or column)
  *
  */
-public class CluePair {
+class CluePair {
+
+  public static final CluePair UNIVERSAL_CLUE = new CluePair(0, 0);
 
   private static int countLeftRightMaximums(final Perm permutation) {
     int maximums = 0;
