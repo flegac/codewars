@@ -6,7 +6,7 @@ public class Perm {
   private final int[] permutation;
 
   public Perm(final int... permutation) {
-    this.permutation = permutation.clone();
+    this.permutation = permutation;
   }
 
   @Override

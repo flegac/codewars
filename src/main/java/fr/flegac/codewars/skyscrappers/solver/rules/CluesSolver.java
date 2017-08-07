@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import fr.flegac.codewars.skyscrappers.permutations.Perm;
-import fr.flegac.codewars.skyscrappers.permutations.PermGenerator;
+import fr.flegac.codewars.skyscrappers.permutations.PermutationIterator;
 import fr.flegac.codewars.skyscrappers.problem.CluePair;
 import fr.flegac.codewars.skyscrappers.problem.Solution;
 
@@ -96,7 +96,7 @@ public class CluesSolver implements SolverRule {
       clueToPermutations.put(clue.end(), new HashSet<>());
     }
 
-    final PermGenerator gen = new PermGenerator(size);
+    final PermutationIterator gen = new PermutationIterator(size);
 
     for (final Perm perm : gen) {
       final CluePair clue = new CluePair(perm);
