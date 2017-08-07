@@ -8,10 +8,20 @@ import fr.flegac.codewars.skyscrappers.permutations.Perm;
  *
  */
 public class CluePair {
-  public static final CluePair UNIVERSAL_CLUE = new CluePair(0, 0);
+  private static int countLeftRightMaximums(final Perm permutation) {
+    int first = 0;
+    int firstMax = -1;
+    for (int i = 0; i < permutation.size(); i++) {
+      if (permutation.get(i) > firstMax) {
+        first++;
+        firstMax = permutation.get(i);
+      }
+    }
+    return first;
+  }
 
-  public final int first;
-  public final int last;
+  private final int first;
+  private final int last;
 
   public CluePair(final int first, final int last) {
     this.first = first;
@@ -19,21 +29,10 @@ public class CluePair {
   }
 
   public CluePair(final Perm permutation) {
-    final int size = permutation.size();
-    int _first = 0, _last = 0;
-    int firstMax = -1, lastMax = -1;
-    for (int i = 0; i < size; i++) {
-      if (permutation.get(i) > firstMax) {
-        _first++;
-        firstMax = permutation.get(i);
-      }
-      if (permutation.get(size - 1 - i) > lastMax) {
-        _last++;
-        lastMax = permutation.get(size - 1 - i);
-      }
-    }
-    first = _first;
-    last = _last;
+    first = countLeftRightMaximums(permutation);
+    permutation.reverse();
+    last = countLeftRightMaximums(permutation);
+    permutation.reverse();
   }
 
   public CluePair end() {

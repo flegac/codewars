@@ -3,6 +3,7 @@ package fr.flegac.codewars.skyscrappers.permutations;
 import java.util.Arrays;
 
 public class Perm {
+  private boolean reversed;
   private final int[] permutation;
 
   public Perm(final int... permutation) {
@@ -24,11 +25,14 @@ public class Perm {
     if (!Arrays.equals(permutation, other.permutation)) {
       return false;
     }
+    if (reversed != other.reversed) {
+      return false;
+    }
     return true;
   }
 
   public int get(final int i) {
-    return permutation[i];
+    return reversed ? permutation[size() - 1 - i] : permutation[i];
   }
 
   @Override
@@ -36,7 +40,12 @@ public class Perm {
     final int prime = 31;
     int result = 1;
     result = prime * result + Arrays.hashCode(permutation);
+    result = prime * result + (reversed ? 1231 : 1237);
     return result;
+  }
+
+  public void reverse() {
+    this.reversed = !reversed;
   }
 
   public int size() {

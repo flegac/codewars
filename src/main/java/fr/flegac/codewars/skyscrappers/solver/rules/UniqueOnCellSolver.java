@@ -1,5 +1,6 @@
 package fr.flegac.codewars.skyscrappers.solver.rules;
 
+import fr.flegac.codewars.skyscrappers.problem.Problem;
 import fr.flegac.codewars.skyscrappers.problem.Solution;
 
 /**
@@ -10,7 +11,9 @@ import fr.flegac.codewars.skyscrappers.problem.Solution;
 public class UniqueOnCellSolver implements SolverRule {
 
   @Override
-  public void apply(final Solution solution) {
+  public void apply(final Problem problem) {
+    final Solution solution = problem.solution();
+
     for (int cellId = 0; cellId < solution.cellNumber(); cellId++) {
       if (match(solution, cellId)) {
         apply(solution, cellId);

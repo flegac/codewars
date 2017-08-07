@@ -1,5 +1,6 @@
 package fr.flegac.codewars.skyscrappers.solver.rules;
 
+import fr.flegac.codewars.skyscrappers.problem.Problem;
 import fr.flegac.codewars.skyscrappers.problem.Solution;
 
 /**
@@ -12,8 +13,9 @@ public class UniqueOnLineSolver implements SolverRule {
   private static final int NOT_FOUND = -1;
 
   @Override
-  public void apply(final Solution solution) {
-    final int size = solution.size();
+  public void apply(final Problem problem) {
+    final int size = problem.size();
+    final Solution solution = problem.solution();
 
     for (int value = 0; value < size; value++) {
       for (int x = 0; x < size; x++) {

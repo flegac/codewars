@@ -2,6 +2,7 @@ package fr.flegac.codewars.skyscrappers.solver.rules;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
+import fr.flegac.codewars.skyscrappers.problem.Problem;
 import fr.flegac.codewars.skyscrappers.problem.Solution;
 
 public class SolverRulesShould {
@@ -12,7 +13,8 @@ public class SolverRulesShould {
 
   @Test
   public void applyUniqueOnCell() throws Exception {
-    final Solution solution = new Solution(SIZE);
+    final Problem problem = Problem.noClues(SIZE);
+    final Solution solution = problem.solution();
 
     final int x = 2;
     final int y = 4;
@@ -22,7 +24,7 @@ public class SolverRulesShould {
 
     solution.keepOnly(id, value);
 
-    uniqueOnCellSolver.apply(solution);
+    uniqueOnCellSolver.apply(problem);
 
     for (int col = 0; col < SIZE; col++) {
       final int cellId = solution.index(col, y);
@@ -42,7 +44,8 @@ public class SolverRulesShould {
 
   @Test
   public void applyUniqueValueOnLine() throws Exception {
-    final Solution solution = new Solution(SIZE);
+    final Problem problem = Problem.noClues(SIZE);
+    final Solution solution = problem.solution();
 
     final int x = 2;
     final int cellId = solution.index(x, 1);
@@ -56,7 +59,7 @@ public class SolverRulesShould {
       solution.remove(id, value);
     }
 
-    uniqueOnLineSolver.apply(solution);
+    uniqueOnLineSolver.apply(problem);
 
     assertThat(solution.isFixed(cellId)).isTrue();
     assertThat(solution.getValue(cellId)).isEqualTo(value);

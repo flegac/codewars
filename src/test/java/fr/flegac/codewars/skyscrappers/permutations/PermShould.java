@@ -24,4 +24,20 @@ public class PermShould {
     assertThat(p1.toString()).isEqualTo(expected);
   }
 
+  @Test
+  public void reverseOrder() throws Exception {
+    final int size = 6;
+
+    final Perm p1 = new Perm(0, 1, 2, 3, 4, 5);
+    final Perm p2 = new Perm(0, 1, 2, 3, 4, 5);
+
+    p2.reverse();
+
+    for (int i = 0; i < size; i++) {
+      assertThat(p1.get(i)).isNotEqualTo(p2.get(i));
+      assertThat(p1.get(i)).isEqualTo(p2.get(size - 1 - i));
+    }
+
+  }
+
 }
