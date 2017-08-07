@@ -8,6 +8,12 @@ import java.util.stream.Collectors;
 import fr.flegac.codewars.skyscrappers.permutations.Perm;
 import fr.flegac.codewars.skyscrappers.permutations.PermutationIterator;
 
+/**
+ * Problem represents an instance of the Skyscrapers problem
+ *
+ * It computes useful statistics from initial clues and maintains the current solution state.
+ *
+ */
 public class Problem {
   private static final int GRID_SIDE_NUMBER = 4;
 
@@ -19,7 +25,7 @@ public class Problem {
   private CluePair[] rows;
   private CluePair[] cols;
   private final Set<CluePair> relevantClues = new HashSet<>();
-  private final Map<CluePair, Set<Perm>> clueToPermutations = new HashMap<>();
+  private final Map<CluePair, Set<Perm>> compatiblePermutations = new HashMap<>();
 
   private final Solution solution;
 
@@ -31,21 +37,14 @@ public class Problem {
     computeClueToPermutationsTable();
   }
 
-  public CluePair colClues(final int y) {
-    return cols[y];
-  }
-
   public int distanceFromResolution() {
     return solution.distanceFromResolution();
   }
 
-  public Set<Perm> getRowPermutations(final int row) {
-    final Set<Perm> permutations = clueToPermutations.get(rows[row]);
-    if (permutations == null) {
-      return null;
-    }
+  public Set<Perm> getRowCompatiblePermutations(final int row) {
+    final Set<Perm> permutations = compatiblePermutations.get(rows[row]);
     return permutations.stream()
-        .filter(x -> isValidRow(solution, x, row))
+        .filter(x -> isValidRow(x, row))
         .collect(Collectors.toSet());
   }
 
@@ -83,9 +82,9 @@ public class Problem {
 
   private void computeClueToPermutationsTable() {
     for (final CluePair clue : relevantClues) {
-      clueToPermutations.put(clue, new HashSet<>());
-      clueToPermutations.put(clue.start(), new HashSet<>());
-      clueToPermutations.put(clue.end(), new HashSet<>());
+      compatiblePermutations.put(clue, new HashSet<>());
+      compatiblePermutations.put(clue.start(), new HashSet<>());
+      compatiblePermutations.put(clue.end(), new HashSet<>());
     }
 
     final PermutationIterator gen = new PermutationIterator(size);
@@ -95,14 +94,14 @@ public class Problem {
       final CluePair start = clue.start();
       final CluePair end = clue.end();
 
-      if (clueToPermutations.containsKey(clue)) {
-        clueToPermutations.get(clue).add(perm);
+      if (compatiblePermutations.containsKey(clue)) {
+        compatiblePermutations.get(clue).add(perm);
       }
-      if (clueToPermutations.containsKey(start)) {
-        clueToPermutations.get(start).add(perm);
+      if (compatiblePermutations.containsKey(start)) {
+        compatiblePermutations.get(start).add(perm);
       }
-      if (clueToPermutations.containsKey(end)) {
-        clueToPermutations.get(end).add(perm);
+      if (compatiblePermutations.containsKey(end)) {
+        compatiblePermutations.get(end).add(perm);
       }
 
     }
@@ -121,7 +120,7 @@ public class Problem {
     }
   }
 
-  private boolean isValidRow(final Solution solution, final Perm perm, final int row) {
+  private boolean isValidRow(final Perm perm, final int row) {
     for (int i = 0; i < perm.size(); i++) {
       if (!solution.isPossible(solution.index(i, row), perm.get(i))) {
         return false;

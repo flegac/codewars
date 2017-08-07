@@ -3,6 +3,10 @@ package fr.flegac.codewars.skyscrappers.permutations;
 import java.util.BitSet;
 import java.util.Iterator;
 
+/**
+ * Iterates over all possible permutations
+ *
+ */
 public class PermutationIterator implements Iterator<Perm>, Iterable<Perm> {
   private final WordIterator wordIterator;
   private Perm next;

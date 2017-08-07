@@ -9,12 +9,25 @@ import fr.flegac.codewars.skyscrappers.problem.Problem;
 import fr.flegac.codewars.skyscrappers.problem.Solution;
 
 /**
- * When:
+ * When: a row (resp. column) is only compatible with a set P of permutations
  *
- * Then:
- *
+ * Then: for each position x in the row (resp. column)
+ * exclude any value v if no permutation p in P verify p[x] = v
  */
-public class CluesSolver implements SolverRule {
+public class LogicalSolver implements SolverRule {
+
+  private static Map<Integer, BitSet> generateConstraints(final int size, final Set<Perm> permutations) {
+    final Map<Integer, BitSet> constraints = new HashMap<>();
+    for (int i = 0; i < size; i++) {
+      constraints.put(i, new BitSet(size));
+    }
+    for (final Perm perm : permutations) {
+      for (int i = 0; i < size; i++) {
+        constraints.get(i).set(perm.get(i));
+      }
+    }
+    return constraints;
+  }
 
   @Override
   public void apply(final Problem problem) {
@@ -27,28 +40,11 @@ public class CluesSolver implements SolverRule {
     }
   }
 
-  public Map<Integer, BitSet> generateConstraints(final int size, final Set<Perm> permutations) {
-    final Map<Integer, BitSet> constraints = new HashMap<>();
-    for (int i = 0; i < size; i++) {
-      constraints.put(i, new BitSet(size));
-    }
-    if (permutations == null || permutations.size() == 0) {
-      for (int i = 0; i < size; i++) {
-        constraints.get(i).set(0, size, true);
-      }
-    } else {
-      for (final Perm perm : permutations) {
-        for (int i = 0; i < size; i++) {
-          constraints.get(i).set(perm.get(i));
-        }
-      }
-    }
-
-    return constraints;
-  }
-
   private void applyRowConstraints(final Problem problem, final int y) {
-    final Set<Perm> permutations = problem.getRowPermutations(y);
+    final Set<Perm> permutations = problem.getRowCompatiblePermutations(y);
+    if (permutations.isEmpty()) {
+      return;
+    }
 
     final Solution solution = problem.solution();
     final int size = solution.size();

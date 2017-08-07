@@ -4,7 +4,7 @@ import java.util.BitSet;
 
 /**
  * Solution encode a partial solution.
- * A partial solution consist of the set of remainings possible values for each cell of the solution.
+ * A partial solution consist of the set of remaining possible values for each cell of the solution.
  *
  */
 public class Solution {

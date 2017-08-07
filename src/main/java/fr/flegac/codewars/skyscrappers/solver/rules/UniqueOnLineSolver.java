@@ -19,17 +19,16 @@ public class UniqueOnLineSolver implements SolverRule {
 
     for (int value = 0; value < size; value++) {
       for (int x = 0; x < size; x++) {
-        findRowWhereAGivenValueIsUnique(solution, value, x);
+        findRowWhereValueIsUniqueOnColumn(solution, value, x);
 
-        // apply on transposed matrix
         solution.transpose();
-        findRowWhereAGivenValueIsUnique(solution, value, x);
+        findRowWhereValueIsUniqueOnColumn(solution, value, x);
         solution.transpose();
       }
     }
   }
 
-  private void findRowWhereAGivenValueIsUnique(final Solution solution, final int value, final int x) {
+  private void findRowWhereValueIsUniqueOnColumn(final Solution solution, final int value, final int x) {
     int result = NOT_FOUND;
     for (int y = 0; y < solution.size(); y++) {
       if (!solution.isPossible(solution.index(x, y), value)) {

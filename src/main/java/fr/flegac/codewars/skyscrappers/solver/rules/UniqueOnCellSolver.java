@@ -15,7 +15,7 @@ public class UniqueOnCellSolver implements SolverRule {
     final Solution solution = problem.solution();
 
     for (int cellId = 0; cellId < solution.cellNumber(); cellId++) {
-      if (match(solution, cellId)) {
+      if (solution.isFixed(cellId)) {
         apply(solution, cellId);
       }
     }
@@ -35,9 +35,5 @@ public class UniqueOnCellSolver implements SolverRule {
         solution.remove(solution.index(i, row), value);
       }
     }
-  }
-
-  private boolean match(final Solution solution, final int cellId) {
-    return solution.isFixed(cellId);
   }
 }

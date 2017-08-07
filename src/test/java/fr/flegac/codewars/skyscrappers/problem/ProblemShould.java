@@ -18,16 +18,6 @@ public class ProblemShould {
   };
 
   @Test
-  public void giveAccessToColClues() throws Exception {
-    final Problem problem = new Problem(CLUES);
-
-    final int col = 2;
-    final CluePair expected = new CluePair(4, 5);
-
-    assertThat(problem.colClues(col)).isEqualTo(expected);
-  }
-
-  @Test
   public void giveAccessToDistanceFromResolution() throws Exception {
     final Problem problem = new Problem(CLUES);
 
@@ -69,7 +59,7 @@ public class ProblemShould {
 
     final Problem problem = new Problem(CLUES);
 
-    final Set<Perm> actual = problem.getRowPermutations(0);
+    final Set<Perm> actual = problem.getRowCompatiblePermutations(0);
 
     final Set<Perm> expected = new HashSet<>();
     expected.add(new Perm(0, 1, 2, 3, 4, 5));

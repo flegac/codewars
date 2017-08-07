@@ -8,19 +8,21 @@ import fr.flegac.codewars.skyscrappers.permutations.Perm;
  *
  */
 public class CluePair {
+
   private static int countLeftRightMaximums(final Perm permutation) {
-    int first = 0;
-    int firstMax = -1;
+    int maximums = 0;
+    int maxValue = -1;
     for (int i = 0; i < permutation.size(); i++) {
-      if (permutation.get(i) > firstMax) {
-        first++;
-        firstMax = permutation.get(i);
+      if (permutation.get(i) > maxValue) {
+        maximums++;
+        maxValue = permutation.get(i);
       }
     }
-    return first;
+    return maximums;
   }
 
   private final int first;
+
   private final int last;
 
   public CluePair(final int first, final int last) {
